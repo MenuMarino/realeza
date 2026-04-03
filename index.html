@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming Clips</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 1.5rem; }
+    h1 { text-align: center; margin-bottom: 1rem; font-size: 1.6rem; }
+
+    .filters { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .filters select, .filters input { background: #1a1a1a; color: #e0e0e0; border: 1px solid #333; border-radius: 6px; padding: .5rem .75rem; font-size: .9rem; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+    .card { background: #1a1a1a; border-radius: 8px; overflow: hidden; }
+    .card video { width: 100%; display: block; background: #000; }
+    .card .info { padding: .75rem; }
+    .card .title { font-weight: 600; margin-bottom: .25rem; word-break: break-word; }
+    .card .meta { font-size: .8rem; color: #888; }
+    .card .game-badge { display: inline-block; background: #2a2a5a; color: #a0a0ff; padding: .1rem .5rem; border-radius: 4px; font-size: .75rem; margin-right: .4rem; text-transform: capitalize; }
+
+    .empty { text-align: center; color: #666; margin-top: 3rem; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <h1>🎮 Gaming Clips</h1>
+  <div class="filters">
+    <select id="gameFilter"><option value="">All Games</option></select>
+    <input type="month" id="dateFilter" title="Filter by month">
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" hidden>No clips match your filters.</p>
+
+  <script>
+    let clips = [];
+
+    async function init() {
+      try {
+        const res = await fetch('clips.json');
+        clips = await res.json();
+      } catch { clips = []; }
+
+      const games = [...new Set(clips.map(c => c.game))].sort();
+      const sel = document.getElementById('gameFilter');
+      games.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; sel.appendChild(o); });
+
+      document.getElementById('gameFilter').addEventListener('change', render);
+      document.getElementById('dateFilter').addEventListener('input', render);
+      render();
+    }
+
+    function render() {
+      const game = document.getElementById('gameFilter').value;
+      const month = document.getElementById('dateFilter').value; // "YYYY-MM" or ""
+      const filtered = clips.filter(c =>
+        (!game || c.game === game) &&
+        (!month || c.date.startsWith(month))
+      );
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      document.getElementById('empty').hidden = filtered.length > 0;
+
+      filtered.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <video controls preload="metadata" src="${c.file}"></video>
+          <div class="info">
+            <div class="title">${esc(c.title)}</div>
+            <div class="meta"><span class="game-badge">${esc(c.game)}</span>${c.date}</div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    init();
+  </script>
+</body>
+</html>
