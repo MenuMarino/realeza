@@ -32,7 +32,7 @@ def parse_clip(path: Path) -> dict | None:
         date = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
 
     return {
-        "file": str(rel),
+        "file": f"https://media.githubusercontent.com/media/MenuMarino/realeza/main/{rel}",
         "game": game,
         "date": date,
         "title": path.stem.replace("_", " "),
