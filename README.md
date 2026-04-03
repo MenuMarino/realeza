@@ -2,7 +2,7 @@
 
 ## Setup
 1. Clone this repo
-2. Run `git lfs install`
+2. Run `./setup.sh` (one-time — installs LFS and enables auto-compression)
 
 ## How it works
 1. Drop `.mp4` files into a game folder under `clips/` (e.g. `clips/lol/`)
@@ -28,3 +28,6 @@ Just create a new folder under `clips/`. The filter dropdown updates automatical
 
 ## Git LFS
 Video files use Git LFS. Free tier: 1 GB storage + 1 GB bandwidth/month.
+
+## Auto-compression
+Clips are automatically compressed to 720p on commit (requires [ffmpeg](https://ffmpeg.org/)). If ffmpeg isn't installed, the original file is kept as-is.
