@@ -1,7 +1,7 @@
 #!/bin/bash
 # Compress any staged .mp4 files before committing
 
-staged=$(git diff --cached --name-only --diff-filter=A -- 'clips/*.mp4' 'clips/**/*.mp4')
+staged=$(git diff --cached --name-only --diff-filter=AM -- 'clips/*.mp4' 'clips/**/*.mp4')
 
 if [ -z "$staged" ]; then
   exit 0
