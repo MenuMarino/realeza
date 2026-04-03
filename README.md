@@ -1,19 +1,34 @@
 # Realeza
 
 ## Setup
-1. Clone this repo
+1. Install [Git Bash](https://git-scm.com/install/windows)
+2. Clone this repo: `git clone https://github.com/MenuMarino/realeza.git`
 2. Run the one-time setup (installs LFS and enables auto-compression):
    - **Mac/Linux:** `./setup.sh`
-   - **Windows:** double-click `setup.bat` or run `setup.bat` in cmd
+   - **Windows:** double-click `setup-windows.bat` or run `setup-windows.bat` in cmd
 
 ## How it works
-1. Drop `.mp4` files into a game folder under `clips/` (e.g. `clips/lol/`)
+1. Add `.mp4` clips (see options below)
 2. Push to the repo
-3. A GitHub Action generates `clips.json` from the folder structure
+3. A GitHub Action generates the clip index and deploys the page
 4. The page renders a filterable video gallery
 
 ## Adding clips
-Put your clips in the right game folder:
+
+### Option 1: Upload tool (Windows)
+1. Double-click `upload-clips.bat`
+2. Select one or more `.mp4` files from anywhere on your PC
+3. Pick a game from the dropdown or type a new game name
+4. Click Upload — compression, commit, and push happen automatically
+
+### Option 2: Manual
+1. Copy your `.mp4` files into the right game folder under `clips/`
+2. Commit and push:
+   ```
+   git add clips/
+   git commit -m "add clips"
+   git push
+   ```
 
 ```
 clips/
@@ -22,8 +37,6 @@ clips/
 ├── minecraft/
 └── <new-game>/       ← just create a folder, it auto-appears as a filter
 ```
-
-**Windows shortcut:** double-click `upload.bat` — pick your clips, pick the game, done.
 
 Outplayed clips work as-is — copy them keeping the original filename. Any `.mp4` works regardless of naming.
 

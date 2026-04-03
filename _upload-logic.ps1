@@ -33,7 +33,8 @@ $combo.Location = New-Object System.Drawing.Point(20, 50)
 $combo.Size = New-Object System.Drawing.Size(340, 25)
 $existingGames = Get-ChildItem -Path $clipsDir -Directory | Where-Object { $_.Name -ne ".git" } | ForEach-Object { $_.Name }
 $existingGames | ForEach-Object { $combo.Items.Add($_) } | Out-Null
-if ($combo.Items.Count -gt 0) { $combo.SelectedIndex = 0 }
+$lolIndex = $combo.Items.IndexOf("lol")
+if ($lolIndex -ge 0) { $combo.SelectedIndex = $lolIndex } elseif ($combo.Items.Count -gt 0) { $combo.SelectedIndex = 0 }
 $form.Controls.Add($combo)
 
 $infoLabel = New-Object System.Windows.Forms.Label
