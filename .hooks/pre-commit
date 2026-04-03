@@ -1,17 +1,17 @@
 #!/bin/bash
 # Compress any staged .mp4 files before committing
 
-git diff --cached --name-only --diff-filter=AM -- '*.mp4' | while IFS= read -r file; do
+if ! command -v ffmpeg &>/dev/null; then
+  echo "⚠️  ffmpeg not found — skipping compression. Install it for smaller file sizes."
+  exit 0
+fi
+
+git diff --cached --name-only --diff-filter=AM -z -- '*.mp4' | while IFS= read -r -d '' file; do
   [ ! -f "$file" ] && continue
 
-  if ! command -v ffmpeg &>/dev/null; then
-    echo "⚠️  ffmpeg not found — skipping compression. Install it for smaller file sizes."
-    exit 0
-  fi
-
-  tmp="${file%.mp4}_compressed.mp4"
+  tmp="$(dirname "$file")/_compressed_tmp.mp4"
   echo "🎬 Compressing $file..."
-  ffmpeg -i "$file" -vf "scale=-2:720" -c:v libx264 -crf 28 -preset fast -c:a aac -b:a 96k -y -loglevel warning "$tmp"
+  ffmpeg -nostdin -i "./$file" -vf "scale=-2:720" -c:v libx264 -crf 28 -preset fast -c:a aac -b:a 96k -y -loglevel warning "./$tmp"
   if [ $? -eq 0 ]; then
     original=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || wc -c < "$file" | tr -d ' ')
     compressed=$(stat -f%z "$tmp" 2>/dev/null || stat -c%s "$tmp" 2>/dev/null || wc -c < "$tmp" | tr -d ' ')
