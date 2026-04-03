@@ -38,8 +38,6 @@ clips/
 └── <new-game>/       ← just create a folder, it auto-appears as a filter
 ```
 
-Outplayed clips work as-is — copy them keeping the original filename. Any `.mp4` works regardless of naming.
-
 ## Git LFS
 Video files use Git LFS. Free tier: 1 GB storage + 1 GB bandwidth/month.
 
