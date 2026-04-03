@@ -1,11 +1,11 @@
 # Realeza
 
 ## Setup
-1. Install [Git Bash](https://git-scm.com/install/windows)
+1. Install [Git Bash](https://git-scm.com/install/windows) (Windows only)
 2. Clone this repo: `git clone https://github.com/MenuMarino/realeza.git`
-2. Run the one-time setup (installs LFS and enables auto-compression):
-   - **Mac/Linux:** `./setup.sh`
-   - **Windows:** double-click `setup-windows.bat` or run `setup-windows.bat` in cmd
+3. Run the one-time setup (installs LFS and enables auto-compression):
+   - **Mac/Linux:** `./setup.sh` (requires `brew install ffmpeg`)
+   - **Windows:** double-click `setup-windows.bat` (installs ffmpeg automatically)
 
 ## How it works
 1. Add `.mp4` clips (see options below)
@@ -40,15 +40,8 @@ clips/
 
 Outplayed clips work as-is — copy them keeping the original filename. Any `.mp4` works regardless of naming.
 
-## Adding a new game
-Just create a new folder under `clips/`. The filter dropdown updates automatically.
-
 ## Git LFS
 Video files use Git LFS. Free tier: 1 GB storage + 1 GB bandwidth/month.
 
 ## Auto-compression
-Clips are automatically compressed to 720p on commit (requires [ffmpeg](https://ffmpeg.org/)).
-- **Mac:** `brew install ffmpeg`
-- **Windows:** download from [ffmpeg.org](https://ffmpeg.org/download.html) or run `winget install ffmpeg`
-
-If ffmpeg isn't installed, the original file is kept as-is.
+Clips are automatically compressed to 720p on commit. If ffmpeg isn't installed, the original file is kept as-is.
